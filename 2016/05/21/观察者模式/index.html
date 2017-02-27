@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>观察者模式 | 仰望星空</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言不知道从什么时候起，总是能看到有人说写技术博客对自己的学习很有帮助。。。
+说是要懂得分享，同时还能有很多好处… 
+我觉得，既然能针对一个知识点写出一些东西，不说自己的见解什么的，哪怕只是初次接触，仅仅是为了记录一下，最起码你也要把那个知识点过一遍，然后理清思路，然后才会去写（当然，大自然的搬运工不算…）。
+这个过程对我来说就是对某个知识点印象的加深及深入理解的过程。
+so…  我也来装装13">
+<meta property="og:type" content="article">
+<meta property="og:title" content="观察者模式">
+<meta property="og:url" content="http://yoursite.com/2016/05/21/观察者模式/index.html">
+<meta property="og:site_name" content="仰望星空">
+<meta property="og:description" content="前言不知道从什么时候起，总是能看到有人说写技术博客对自己的学习很有帮助。。。
+说是要懂得分享，同时还能有很多好处… 
+我觉得，既然能针对一个知识点写出一些东西，不说自己的见解什么的，哪怕只是初次接触，仅仅是为了记录一下，最起码你也要把那个知识点过一遍，然后理清思路，然后才会去写（当然，大自然的搬运工不算…）。
+这个过程对我来说就是对某个知识点印象的加深及深入理解的过程。
+so…  我也来装装13">
+<meta property="og:updated_time" content="2016-07-24T05:47:11.641Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="观察者模式">
+<meta name="twitter:description" content="前言不知道从什么时候起，总是能看到有人说写技术博客对自己的学习很有帮助。。。
+说是要懂得分享，同时还能有很多好处… 
+我觉得，既然能针对一个知识点写出一些东西，不说自己的见解什么的，哪怕只是初次接触，仅仅是为了记录一下，最起码你也要把那个知识点过一遍，然后理清思路，然后才会去写（当然，大自然的搬运工不算…）。
+这个过程对我来说就是对某个知识点印象的加深及深入理解的过程。
+so…  我也来装装13">
+  
+    <link rel="alternate" href="/atom.xml" title="仰望星空" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">仰望星空</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">渺小的我...</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-观察者模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/21/观察者模式/" class="article-date">
+  <time datetime="2016-05-21T04:41:43.000Z" itemprop="datePublished">2016-05-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      观察者模式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不知道从什么时候起，总是能看到有人说写技术博客对自己的学习很有帮助。。。</p>
+<p>说是要懂得分享，同时还能有很多好处… </p>
+<p>我觉得，既然能针对一个知识点写出一些东西，不说自己的见解什么的，哪怕只是初次接触，仅仅是为了记录一下，最起码你也要把那个知识点过一遍，然后理清思路，然后才会去写（当然，大自然的搬运工不算…）。</p>
+<p>这个过程对我来说就是对某个知识点印象的加深及深入理解的过程。</p>
+<p>so…  我也来装装13</p>
+<p>完全是第一次，就当是学习笔记吧！</p>
+<hr>
+<h1 id="设计模式——观察者模式"><a href="#设计模式——观察者模式" class="headerlink" title="设计模式——观察者模式"></a>设计模式——观察者模式</h1><h6 id="开始有意识的接触JavaScript设计模式，这次先选一个练练手…"><a href="#开始有意识的接触JavaScript设计模式，这次先选一个练练手…" class="headerlink" title="开始有意识的接触JavaScript设计模式，这次先选一个练练手…"></a>开始有意识的接触JavaScript设计模式，这次先选一个练练手…</h6><h4 id="开始之前先来想象这么一个场景："><a href="#开始之前先来想象这么一个场景：" class="headerlink" title="开始之前先来想象这么一个场景："></a>开始之前先来想象这么一个场景：</h4><p>在一家小互联网公司里，有着七个写着代码时一本正经，实则内心闷骚的屌丝程序猿。某天，公司突然来了一位美女攻城狮，这简直是一激石成千层浪，闷骚的程序猿们同时有了同一个目标(Subject)——这妹子是我的了！</p>
+<p>自此，七个程序猿都会观察(Observer)妹子的一举一动,每当妹子有什么情况发生，他们都会做出自己的反应…</p>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>从我的理解出发，我觉得上面的这个场景就是一个简单的观察着模式的体现。</p>
+<p>那个妹子就是一个目标，同时被七个屌丝程序猿关注着，这七个程序猿就是观察者。</p>
+<p>每当目标发出一些信息时，观察着就会做出自己相应的动作。</p>
+<p>这就是我对观察着模式的一个简单理解！</p>
+<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><p>优点：可帮助我们识别包含关系的层，并且可以用目标集合观察着进行替换。实际上可用于将应用程序分解为更小、更松散耦合的快，以进行代码管理和复用。</p>
+<p>缺点：很难保证应用程序的特定部分按照我们的期望运行；</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>实现观察着模式，要明白四个相关概念：</p>
+<ul>
+<li>目标(Object)：维护一些列的观察者，方便添加或删除观察者；</li>
+<li>观察者(Observer): 为在目标状态改变时获得通知的对象提供一个更新接口；</li>
+<li>具体目标(ConcreteSuject)：状态发生改变时想观察者发出通知，储存具体观察者的状态；</li>
+<li>具体观察者(ConcreateObserver)：储存一个纸箱具体目标的引用，实现 观察者 的更新接口，以使自身状态与目标状态保持一致；</li>
+</ul>
+<p>以上的 目标 和 观察者 都是一个抽象的概念，只是定义了一些观察者和目标应有的方法；</p>
+<p>具体目标和具体观察者就分别对应着开始的那个场景中的“妹子”和“七个程序猿们”.</p>
+<p>首先，我们应该模拟一个目标可能拥有的一系列依赖观察者(Observer)：</p>
+<pre><code>// 管理一些列的依赖观察者的类
+function ObserverList(){
+    this.observerList = [];        // 存储一系列的观察者
+};
+
+ObserverList.prototype.Add = function(obj){
+    // TODO 添加一个观察者对象
+};
+
+ObserverList.prototype.Empty = function(){
+    // TODO 清空依赖观察者列表
+};
+
+ObserverList.prototype.Count = function(){
+    // TODO 获取依赖观察者数量
+};
+
+ObserverList.prototype.Get = function(index){
+    // TODO 通过索引获取相应依赖观察者
+};
+
+ObserverList.prototype.Insert = function(obj，index){
+    // TODO 将依赖观察者插入到指定位置
+};
+
+ObserverList.prototype.IndexOf = function(obj，startIndex){
+    // TODO 获取依赖观察者下标
+};
+
+ObserverList.prototype.RemoveIndexAt = function(index){
+    // TODO 将指定位置的依赖观察者移除
+};
+</code></pre><p>同时，还需要实现一个简单的对象扩展方法，留作后用：</p>
+<pre><code>function extend(obj, extension){
+    for(var key in obj){
+        extension[key] = obj[key];
+    }
+}
+</code></pre><p>接下来，就是需要模拟实现一个目标了。一个目标应该具有：添加观察者、移除观察者以及提醒观察者更新的方法。</p>
+<pre><code>function Subject(){
+    // new 一个前面实现的依赖观察者管理列表实例
+    // 用来管理自身的一系列依赖观察者
+    this.observerList = new ObserverList();
+};
+
+Subject.prototype.AddObserver = function(observer){
+    // TODO 运用前面实现的observerList中的方法 添加一个观察者
+    // 如： this.observerList.Add(observer);
+    // 注意，Add方法就是前面实现的依赖观察者管理列表中的Add方法
+};
+
+Subject.prototype.RemoveObserver = function(observer){
+    // TODO 运用前面实现的observerList中的方法 移除一个观察者
+};
+
+Subject.prototype.Notify = (context){
+    // TODO 提醒所有在 thi.observerList中的观察者进行状态更新
+    var observerCount = this.observerList.Count();
+    for(var i = 0; i &lt; observerCount.length; i++){
+        // 这里的Update方法是每个观察者自有的更新方法
+        this.observerList.Get(i).update();
+    }
+};
+</code></pre><p>最后是用来创建观察者的构造方法：</p>
+<pre><code>function Observer(){
+    this.Update = function(){
+        // 这里的实现交给具体观察者
+        // 就是这样，没了！当然你还可以扩展一些别的功能
+    };
+};
+</code></pre><p>OK，一个简单的观察者模式组件实现完成！</p>
+<h4 id="就剩下使用了"><a href="#就剩下使用了" class="headerlink" title="就剩下使用了"></a>就剩下使用了</h4><h6 id="直接搬用书上的例子："><a href="#直接搬用书上的例子：" class="headerlink" title="直接搬用书上的例子："></a>直接搬用书上的例子：</h6><p>html部分：</p>
+<pre><code>&lt;button id=&quot;addNewObserver&quot;&gt;添加新观察者(checkbox)&lt;/button&gt;
+&lt;input id=&quot;mainCheckbox&quot; type=&quot;checkbox&quot; /&gt;
+&lt;div id=&quot;observerContainer&quot;&gt;&lt;/div&gt;
+</code></pre><p>样例脚本：</p>
+<pre><code>// 引用DOM
+var controlCheckbox = document.getElementById(&quot;mainCheckbox&quot;),
+    addBtn = document.getElementById(&quot;addNewObserver&quot;),
+    container = document.getElementById(&quot;observerContainer&quot;);
+
+// 具体目标
+// 使用Subject扩展controlCheckbox
+extend(new Subject(), controlCheckbox);
+
+// 点击checkbox 会触发通知到观察者上
+controlCheckbox[&quot;onchick&quot;] = function(){
+    controlCheckbox.Notify(controlCheckbox.checked);
+};
+
+// 点击添加按钮事件
+addBtn[&quot;onchick&quot;] = AddNewObserver;
+
+// 添加具体观察者
+function AddNewObserver(){
+    // 创建新的checkbox
+    var check = document.createElement(&quot;input&quot;);
+    check.type = &quot;checkbox&quot;;
+
+    // 利用Observer类扩展check
+    extend(new Observer(), check);
+
+    // 重写自定义更新行为
+    // 这里 目标checkbox选中状态改变 提醒、触发观察者的Update方法
+    // 这里的参数value为具体目标的选中状态
+    // 当目标的选中状态发生改变 观察者调用Update方法 使自身的选中状态与目标同步
+    check.Update = function(value){
+        this.checked = value;
+    };
+};
+
+// 为主目标(Subject) 的观察者列表添加新的观察者
+controlCheckbox.AddObserver(check);
+
+// 最后将观察者附加到容器中
+container.appendChild(check);
+</code></pre><p>这个例子中，简单的实现、使用了Observer模式，包含目标(Subject)、观察者(Observer)、具体目标(Concreate Subject)和具体观察者(Concreate Observer)的概念。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/05/21/观察者模式/" data-id="ciznyxaa5000gw0tdncmja72q" class="article-share-link">Delen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/29/订阅-发布模式/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Nieuwer</strong>
+      <div class="article-nav-title">
+        
+          订阅/发布模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/20/Git的简单实用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ouder</strong>
+      <div class="article-nav-title">Git Base</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Labels</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/How-to-use？/">How to use？</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/How-to-use？/" style="font-size: 20px;">How to use？</a> <a href="/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/设计模式/" style="font-size: 15px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archieven</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recente berichten</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/02/27/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/29/订阅-发布模式/">订阅/发布模式</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/21/观察者模式/">观察者模式</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/20/Git的简单实用/">Git Base</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/文章写作/">基础写作</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 廖超<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
